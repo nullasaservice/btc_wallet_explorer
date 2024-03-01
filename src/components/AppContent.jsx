@@ -2,6 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import React from "react";
 import PriceCard from "./PriceCard";
 import NewAddressModal from "./NewAddressModal";
+import AddressInfoRenderer from "./AddressInfoRenderer";
 
 const AppContent = () => (
   <>
@@ -13,6 +14,7 @@ const AppContent = () => (
       <PriceCard currency="EUR" />
     </Stack>
     <NewAddressModal />
+    <AddressInfoRenderer />
   </>
 );
 

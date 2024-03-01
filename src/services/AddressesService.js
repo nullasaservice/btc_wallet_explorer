@@ -12,8 +12,12 @@ class AddressesService {
     return addresses;
   }
 
+  static getNumberAddresses() {
+    return this.getAddresses().length;
+  }
+
   static isEmpty() {
-    return this.getAddresses().length === 0;
+    return this.getNumberAddresses() === 0;
   }
 
   static addAddress(address) {
@@ -21,6 +25,13 @@ class AddressesService {
     const stringifiedJson = JSON.stringify(addresses);
 
     localStorage.setItem(this.#LOCAL_STORAGE_KEY, stringifiedJson);
+
+    // Needed so "AddressInfoRenderer" component gets updated
+    window.dispatchEvent(new Event("storage"));
+  }
+
+  static getAddressWithIndex(index) {
+    return this.getAddresses().at(index);
   }
 }
 

@@ -28,7 +28,9 @@ const NewAddressModal = () => {
 
   return (
     <Box marginY={2}>
-      <Button onClick={() => setShowModal(true)}>New address</Button>
+      <Button variant="outlined" onClick={() => setShowModal(true)}>
+        New address
+      </Button>
       <Dialog open={showModal} onClose={handleClose}>
         <DialogContent>
           <TextField
