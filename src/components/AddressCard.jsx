@@ -20,7 +20,7 @@ const AddressInfo = ({ label, value }) => (
   </>
 );
 
-const AddressCard = ({ addressIndex }) => {
+const AddressCard = ({ index, address }) => {
   const [addressData, setAddressData] = useState();
   const [loading, setLoading] = useState(true);
   const [addressNotFound, setAddressNotFound] = useState(false);
@@ -28,8 +28,6 @@ const AddressCard = ({ addressIndex }) => {
   const MAX_ADDRESS_CHARACTERS = 30;
 
   const fetchAddressData = async () => {
-    const address = AddressesService.getAddressWithIndex(addressIndex);
-
     try {
       const addressDataResponse = await axios.get(
         "https://blockchain.info/balance?active=" + address
@@ -65,13 +63,13 @@ const AddressCard = ({ addressIndex }) => {
   useEffect(() => {
     setLoading(true);
     setAddressNotFound(false);
-  }, [addressIndex]);
+  }, [index, address]);
 
   useEffect(() => {
     if (btcPrices) {
       fetchAddressData();
     }
-  }, [addressIndex, btcPrices]);
+  }, [index, address, btcPrices]);
 
   return (
     <Card>
@@ -83,7 +81,7 @@ const AddressCard = ({ addressIndex }) => {
         ) : (
           <>
             <AddressInfo
-              label={`Address #${addressIndex + 1}`}
+              label={`Address #${index + 1}`}
               value={addressData.address}
             />
             {addressNotFound ? (

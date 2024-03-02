@@ -35,6 +35,14 @@ class AddressesService {
     this.saveAddresses(addresses);
   }
 
+  static addAtIndex(index, address) {
+    const addresses = this.getAddresses();
+
+    addresses[index] = address;
+
+    this.saveAddresses(addresses);
+  }
+
   static removeAtIndex(index) {
     const addresses = this.getAddresses();
     const newAddresses = addresses.toSpliced(index, 1);

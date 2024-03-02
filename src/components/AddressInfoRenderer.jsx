@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import AddressesService from "../services/AddressesService";
 import { ArrowLeft, ArrowRight, Delete, Help } from "@mui/icons-material";
 import AddressCard from "./AddressCard";
+import EditAddressModal from "./EditAddressModal";
 
 const AddressInfoRenderer = () => {
   const [_, setNum] = useState(0);
@@ -11,7 +12,6 @@ const AddressInfoRenderer = () => {
   const isPreviousButtonDisabled = addressIndex === 0;
   const isNextButtonDisabled =
     addressIndex === AddressesService.getNumberAddresses() - 1;
-  const isDeleteButtonDisabled = AddressesService.isEmpty();
 
   // Ugly way to update this component when new address is added
   useEffect(() => {
@@ -50,7 +50,10 @@ const AddressInfoRenderer = () => {
 
   return (
     <Box marginX={2}>
-      <AddressCard addressIndex={addressIndex} />
+      <AddressCard
+        index={addressIndex}
+        address={AddressesService.getAddressWithIndex(addressIndex)}
+      />
       <Box width="100%" display="flex" justifyContent="center" marginTop={2}>
         <Button
           variant="contained"
@@ -60,6 +63,7 @@ const AddressInfoRenderer = () => {
         >
           <ArrowLeft />
         </Button>
+        <EditAddressModal addressIndex={addressIndex} />
         <Button
           variant="contained"
           onClick={handleRemoval}
