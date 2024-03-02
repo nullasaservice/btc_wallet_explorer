@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import AddressService from "../services/AddressesService";
+import AddressService from "../services/AddressService";
 import { ArrowLeft, ArrowRight, Delete, Help } from "@mui/icons-material";
 import AddressCard from "./AddressCard";
 import EditAddressModal from "./EditAddressModal";

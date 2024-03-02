@@ -7,7 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
-import AddressService from "../services/AddressesService";
+import AddressService from "../services/AddressService";
 import NotificationContext from "./contexts/NotificationContext";
 
 const EditAddressModal = ({ addressIndex }) => {
