@@ -7,13 +7,13 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
-import AddressesService from "../services/AddressesService";
+import AddressService from "../services/AddressesService";
 
 const EditAddressModal = ({ addressIndex }) => {
   const [addressToEdit, setAddressToEdit] = useState();
 
   const handleEdit = () => {
-    const address = AddressesService.getAddressWithIndex(addressIndex);
+    const address = AddressService.getWithIndex(addressIndex);
 
     setAddressToEdit(address);
   };
@@ -23,7 +23,7 @@ const EditAddressModal = ({ addressIndex }) => {
   };
 
   const handleSave = () => {
-    AddressesService.addAtIndex(addressIndex, addressToEdit);
+    AddressService.addAtIndex(addressIndex, addressToEdit);
 
     handleClose();
   };

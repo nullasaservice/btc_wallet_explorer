@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import AddressesService from "../services/AddressesService";
+import AddressService from "../services/AddressesService";
 import { ArrowLeft, ArrowRight, Delete, Help } from "@mui/icons-material";
 import AddressCard from "./AddressCard";
 import EditAddressModal from "./EditAddressModal";
@@ -10,8 +10,7 @@ const AddressInfoRenderer = () => {
   const [addressIndex, setAddressIndex] = useState(0);
 
   const isPreviousButtonDisabled = addressIndex === 0;
-  const isNextButtonDisabled =
-    addressIndex === AddressesService.getNumberAddresses() - 1;
+  const isNextButtonDisabled = addressIndex === AddressService.getCount() - 1;
 
   // Ugly way to update this component when new address is added
   useEffect(() => {
@@ -31,11 +30,11 @@ const AddressInfoRenderer = () => {
   };
 
   const handleRemoval = () => {
-    AddressesService.removeAtIndex(addressIndex);
+    AddressService.removeAtIndex(addressIndex);
     setAddressIndex(0);
   };
 
-  if (AddressesService.isEmpty()) {
+  if (AddressService.isEmpty()) {
     return (
       <>
         <Help
@@ -52,7 +51,7 @@ const AddressInfoRenderer = () => {
     <Box marginX={2}>
       <AddressCard
         index={addressIndex}
-        address={AddressesService.getAddressWithIndex(addressIndex)}
+        address={AddressService.getWithIndex(addressIndex)}
       />
       <Box width="100%" display="flex" justifyContent="center" marginTop={2}>
         <Button

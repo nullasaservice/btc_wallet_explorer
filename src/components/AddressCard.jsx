@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import AddressesService from "../services/AddressesService";
+import AddressService from "../services/AddressesService";
 import BtcPriceContext from "./contexts/BtcPriceContext";
 import { Warning } from "@mui/icons-material";
 

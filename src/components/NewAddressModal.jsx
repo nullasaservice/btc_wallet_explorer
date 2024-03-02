@@ -7,7 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
-import AddressesService from "../services/AddressesService";
+import AddressService from "../services/AddressesService";
 
 const NewAddressModal = () => {
   const EMPTY_ADDRESS = "";
@@ -21,7 +21,7 @@ const NewAddressModal = () => {
   };
 
   const handleSave = () => {
-    AddressesService.addAddress(address);
+    AddressService.append(address);
 
     handleClose();
   };
