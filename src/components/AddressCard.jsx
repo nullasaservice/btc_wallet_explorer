@@ -21,6 +21,7 @@ const AddressInfo = ({ label, value }) => (
 
 const AddressCard = ({ addressIndex }) => {
   const [addressData, setAddressData] = useState();
+  const [loading, setLoading] = useState(true);
   const btcPrices = useContext(BtcPriceContext);
   const MAX_ADDRESS_CHARACTERS = 30;
 
@@ -48,7 +49,12 @@ const AddressCard = ({ addressIndex }) => {
         eur: btcPrices.eur * addressBalance,
       },
     });
+    setLoading(false);
   };
+
+  useEffect(() => {
+    setLoading(true);
+  }, [addressIndex]);
 
   useEffect(() => {
     if (btcPrices) {
@@ -59,7 +65,7 @@ const AddressCard = ({ addressIndex }) => {
   return (
     <Card>
       <CardContent>
-        {!addressData ? (
+        {loading ? (
           <Box display="flex" justifyContent="center" marginTop={1}>
             <CircularProgress />
           </Box>
