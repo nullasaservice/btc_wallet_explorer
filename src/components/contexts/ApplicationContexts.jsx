@@ -1,9 +1,12 @@
 import React from "react";
 import BtcPriceContextProvider from "./BtcPriceContextProvider";
+import NotificationContextProvider from "./NotificationContextProvider";
 
 const ApplicationContexts = ({ children }) => (
   <>
-    <BtcPriceContextProvider>{children}</BtcPriceContextProvider>
+    <NotificationContextProvider>
+      <BtcPriceContextProvider>{children}</BtcPriceContextProvider>
+    </NotificationContextProvider>
   </>
 );
 

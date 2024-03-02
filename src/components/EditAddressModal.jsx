@@ -6,11 +6,13 @@ import {
   DialogContent,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AddressService from "../services/AddressesService";
+import NotificationContext from "./contexts/NotificationContext";
 
 const EditAddressModal = ({ addressIndex }) => {
   const [addressToEdit, setAddressToEdit] = useState();
+  const setNotification = useContext(NotificationContext);
 
   const handleEdit = () => {
     const address = AddressService.getWithIndex(addressIndex);
@@ -24,7 +26,7 @@ const EditAddressModal = ({ addressIndex }) => {
 
   const handleSave = () => {
     AddressService.addAtIndex(addressIndex, addressToEdit);
-
+    setNotification(`Address #${addressIndex + 1} modified`);
     handleClose();
   };
 

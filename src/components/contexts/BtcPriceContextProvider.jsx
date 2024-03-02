@@ -1,11 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import BtcPriceContext from "./BtcPriceContext";
-import { Snackbar } from "@mui/material";
+import NotificationContext from "./NotificationContext";
 
 const BtcPriceContextProvider = ({ children }) => {
   const [btcPrice, setBtcPrice] = useState();
-  const [error, setError] = useState(false);
+  const setNotification = useContext(NotificationContext);
 
   const getValues = async () => {
     try {
@@ -22,29 +22,20 @@ const BtcPriceContextProvider = ({ children }) => {
         usd: currencyValuesResponse.data.bitcoin.usd,
         eur: currencyValuesResponse.data.bitcoin.eur,
       });
-    } catch (err) {
-      setError(true);
+    } catch (_) {
+      setNotification(
+        "Bitcoin prices could not be loaded. Refresh this page in a while to try again."
+      );
     }
   };
 
   useEffect(() => {
-    getValues();
-  }, []);
-
-  const handleClose = () => {
-    setError(false);
-  };
+    setNotification && getValues();
+  }, [setNotification]);
 
   return (
     <BtcPriceContext.Provider value={btcPrice}>
       {children}
-      <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        open={error}
-        onClose={handleClose}
-        autoHideDuration={5000}
-        message="Bitcoin prices could not be loaded. Refresh this page in a while to try again."
-      />
     </BtcPriceContext.Provider>
   );
 };

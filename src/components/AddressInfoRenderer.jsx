@@ -1,13 +1,15 @@
 import { Box, Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AddressService from "../services/AddressesService";
 import { ArrowLeft, ArrowRight, Delete, Help } from "@mui/icons-material";
 import AddressCard from "./AddressCard";
 import EditAddressModal from "./EditAddressModal";
+import NotificationContext from "./contexts/NotificationContext";
 
 const AddressInfoRenderer = () => {
   const [_, setNum] = useState(0);
   const [addressIndex, setAddressIndex] = useState(0);
+  const setNotification = useContext(NotificationContext);
 
   const isPreviousButtonDisabled = addressIndex === 0;
   const isNextButtonDisabled = addressIndex === AddressService.getCount() - 1;
@@ -31,6 +33,7 @@ const AddressInfoRenderer = () => {
 
   const handleRemoval = () => {
     AddressService.removeAtIndex(addressIndex);
+    setNotification(`Address #${addressIndex + 1} removed`);
     setAddressIndex(0);
   };
 

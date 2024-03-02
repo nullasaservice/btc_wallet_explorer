@@ -6,14 +6,16 @@ import {
   DialogContent,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AddressService from "../services/AddressesService";
+import NotificationContext from "./contexts/NotificationContext";
 
 const NewAddressModal = () => {
   const EMPTY_ADDRESS = "";
 
   const [showModal, setShowModal] = useState(false);
   const [address, setAddress] = useState(EMPTY_ADDRESS);
+  const setNotification = useContext(NotificationContext);
 
   const handleClose = () => {
     setAddress(EMPTY_ADDRESS);
@@ -22,7 +24,7 @@ const NewAddressModal = () => {
 
   const handleSave = () => {
     AddressService.append(address);
-
+    setNotification("New address added");
     handleClose();
   };
 
