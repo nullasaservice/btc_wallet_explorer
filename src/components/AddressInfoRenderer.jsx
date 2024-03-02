@@ -1,16 +1,17 @@
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddressesService from "../services/AddressesService";
-import { ArrowLeft, ArrowRight } from "@mui/icons-material";
+import { ArrowLeft, ArrowRight, Delete, Help } from "@mui/icons-material";
 import AddressCard from "./AddressCard";
 
 const AddressInfoRenderer = () => {
-  const [num, setNum] = useState(0);
+  const [_, setNum] = useState(0);
   const [addressIndex, setAddressIndex] = useState(0);
 
   const isPreviousButtonDisabled = addressIndex === 0;
   const isNextButtonDisabled =
     addressIndex === AddressesService.getNumberAddresses() - 1;
+  const isDeleteButtonDisabled = AddressesService.isEmpty();
 
   // Ugly way to update this component when new address is added
   useEffect(() => {
@@ -29,8 +30,22 @@ const AddressInfoRenderer = () => {
     setAddressIndex((i) => i + 1);
   };
 
+  const handleRemoval = () => {
+    AddressesService.removeAtIndex(addressIndex);
+    setAddressIndex(0);
+  };
+
   if (AddressesService.isEmpty()) {
-    return <p>Add addresses to get them dispayed here.</p>;
+    return (
+      <>
+        <Help
+          fontSize="large"
+          color="info"
+          sx={{ marginTop: 1, marginBottom: -1 }}
+        />
+        <p>Add addresses to get them displayed here.</p>
+      </>
+    );
   }
 
   return (
@@ -44,6 +59,14 @@ const AddressInfoRenderer = () => {
           sx={{ marginRight: 2 }}
         >
           <ArrowLeft />
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleRemoval}
+          sx={{ marginRight: 2 }}
+          color="error"
+        >
+          <Delete />
         </Button>
         <Button
           variant="contained"

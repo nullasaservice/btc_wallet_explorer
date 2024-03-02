@@ -20,14 +20,26 @@ class AddressesService {
     return this.getNumberAddresses() === 0;
   }
 
-  static addAddress(address) {
-    const addresses = this.getAddresses().concat(address);
+  static saveAddresses(addresses) {
     const stringifiedJson = JSON.stringify(addresses);
 
     localStorage.setItem(this.#LOCAL_STORAGE_KEY, stringifiedJson);
 
     // Needed so "AddressInfoRenderer" component gets updated
     window.dispatchEvent(new Event("storage"));
+  }
+
+  static addAddress(address) {
+    const addresses = this.getAddresses().concat(address);
+
+    this.saveAddresses(addresses);
+  }
+
+  static removeAtIndex(index) {
+    const addresses = this.getAddresses();
+    const newAddresses = addresses.toSpliced(index, 1);
+
+    this.saveAddresses(newAddresses);
   }
 
   static getAddressWithIndex(index) {
