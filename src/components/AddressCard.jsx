@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardContent,
   CircularProgress,
@@ -7,7 +8,6 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import AddressService from "../services/AddressesService";
 import BtcPriceContext from "./contexts/BtcPriceContext";
 import { Warning } from "@mui/icons-material";
 
@@ -21,11 +21,19 @@ const AddressInfo = ({ label, value }) => (
 );
 
 const AddressCard = ({ index, address }) => {
+  const MAX_ADDRESS_CHARACTERS = 25;
+
   const [addressData, setAddressData] = useState();
   const [loading, setLoading] = useState(true);
   const [addressNotFound, setAddressNotFound] = useState(false);
+  const [showFullAddress, setShowFullAddress] = useState(false);
   const btcPrices = useContext(BtcPriceContext);
-  const MAX_ADDRESS_CHARACTERS = 30;
+
+  const addressTooLong = address.length > MAX_ADDRESS_CHARACTERS;
+
+  const handleFullAddress = () => {
+    setShowFullAddress((b) => !b);
+  };
 
   const fetchAddressData = async () => {
     try {
@@ -37,10 +45,9 @@ const AddressCard = ({ index, address }) => {
       const addressBalance =
         addressDataResponse.data[address]["final_balance"] / 100000000;
 
-      const croppedAddress =
-        address.length <= MAX_ADDRESS_CHARACTERS
-          ? address
-          : address.substring(0, MAX_ADDRESS_CHARACTERS) + "...";
+      const croppedAddress = !addressTooLong
+        ? address
+        : address.substring(0, MAX_ADDRESS_CHARACTERS);
 
       setAddressData({
         address: croppedAddress,
@@ -71,6 +78,8 @@ const AddressCard = ({ index, address }) => {
     }
   }, [index, address, btcPrices]);
 
+  console.log(addressData?.address, address, address.length);
+
   return (
     <Card>
       <CardContent>
@@ -82,7 +91,38 @@ const AddressCard = ({ index, address }) => {
           <>
             <AddressInfo
               label={`Address #${index + 1}`}
-              value={addressData.address}
+              value={
+                !addressTooLong ? (
+                  address
+                ) : (
+                  <Box>
+                    {addressData.address}...
+                    <Button
+                      variant="contained"
+                      onClick={handleFullAddress}
+                      sx={{
+                        maxHeight: "15px",
+                        minWidth: "5px",
+                        maxWidth: "5px",
+                        backgroundColor: "#797a7a",
+                        color: "#fff",
+                        marginLeft: 1,
+                      }}
+                    >
+                      ···
+                    </Button>
+                    {showFullAddress && (
+                      <Typography sx={{ marginTop: -0.5 }}>
+                        ...
+                        {address.substring(
+                          MAX_ADDRESS_CHARACTERS,
+                          address.length
+                        )}
+                      </Typography>
+                    )}
+                  </Box>
+                )
+              }
             />
             {addressNotFound ? (
               <>
