@@ -1,8 +1,9 @@
-import { Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import PriceCard from "./PriceCard";
 import NewAddressModal from "./NewAddressModal";
 import AddressInfoRenderer from "./AddressInfoRenderer";
+import PrivacyModeSwitch from "./PrivacyModeSwitch";
 
 const AppContent = () => (
   <>
@@ -13,7 +14,10 @@ const AppContent = () => (
       <PriceCard currency="USD" />
       <PriceCard currency="EUR" />
     </Stack>
-    <NewAddressModal />
+    <Box display="flex" justifyContent="center" width="100%" marginY={2}>
+      <NewAddressModal />
+      <PrivacyModeSwitch />
+    </Box>
     <AddressInfoRenderer />
   </>
 );

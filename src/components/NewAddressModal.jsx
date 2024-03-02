@@ -29,7 +29,7 @@ const NewAddressModal = () => {
   };
 
   return (
-    <Box marginY={2}>
+    <Box>
       <Button variant="outlined" onClick={() => setShowModal(true)}>
         New address
       </Button>

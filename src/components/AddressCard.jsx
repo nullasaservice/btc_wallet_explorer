@@ -10,15 +10,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import BtcPriceContext from "./contexts/BtcPriceContext";
 import { Warning } from "@mui/icons-material";
-
-const AddressInfo = ({ label, value }) => (
-  <>
-    <p>{value}</p>
-    <Typography color="text.secondary" sx={{ marginTop: -2, fontSize: 14 }}>
-      {label}
-    </Typography>
-  </>
-);
+import AddressCardInfo from "./AddressCardInfo";
 
 const AddressCard = ({ index, address }) => {
   const MAX_ADDRESS_CHARACTERS = 25;
@@ -89,7 +81,7 @@ const AddressCard = ({ index, address }) => {
           </Box>
         ) : (
           <>
-            <AddressInfo
+            <AddressCardInfo
               label={`Address #${index + 1}`}
               value={
                 !addressTooLong ? (
@@ -139,15 +131,15 @@ const AddressCard = ({ index, address }) => {
               </>
             ) : (
               <>
-                <AddressInfo
+                <AddressCardInfo
                   label="Balance in BTC"
                   value={addressData.balance}
                 />
-                <AddressInfo
+                <AddressCardInfo
                   label="Balance in USD"
                   value={addressData.prices.usd}
                 />
-                <AddressInfo
+                <AddressCardInfo
                   label="Balance in EUR"
                   value={addressData.prices.eur}
                 />
