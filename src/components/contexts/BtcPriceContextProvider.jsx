@@ -10,12 +10,7 @@ const BtcPriceContextProvider = ({ children }) => {
   const getValues = async () => {
     try {
       const currencyValuesResponse = await axios.get(
-        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,eur",
-        {
-          headers: {
-            "x-cg-api-key": import.meta.env.COINGECKO_API_KEY,
-          },
-        }
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,eur"
       );
 
       setBtcPrice({
