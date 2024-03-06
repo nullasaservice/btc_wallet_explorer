@@ -14,18 +14,32 @@ const NewAddressModal = () => {
   const EMPTY_ADDRESS = "";
 
   const [showModal, setShowModal] = useState(false);
+  const [isTextFieldTouched, setIsTextFieldTouched] = useState(false);
   const [address, setAddress] = useState(EMPTY_ADDRESS);
   const setNotification = useContext(NotificationContext);
 
+  const isEmptyAddress = address === EMPTY_ADDRESS;
+  const hasTextFieldError = isEmptyAddress && isTextFieldTouched;
+
   const handleClose = () => {
     setAddress(EMPTY_ADDRESS);
+    setIsTextFieldTouched(false);
     setShowModal(false);
   };
 
   const handleSave = () => {
-    AddressService.append(address);
-    setNotification("New address added");
-    handleClose();
+    if (isEmptyAddress) {
+      setIsTextFieldTouched(true);
+    } else {
+      AddressService.append(address);
+      setNotification("New address added");
+      handleClose();
+    }
+  };
+
+  const handleChange = (event) => {
+    !isTextFieldTouched && setIsTextFieldTouched(true);
+    setAddress(event.target.value);
   };
 
   return (
@@ -38,9 +52,8 @@ const NewAddressModal = () => {
           <TextField
             label="Address"
             value={address}
-            onChange={(event) => {
-              setAddress(event.target.value);
-            }}
+            error={hasTextFieldError}
+            onChange={handleChange}
           />
         </DialogContent>
         <DialogActions>
