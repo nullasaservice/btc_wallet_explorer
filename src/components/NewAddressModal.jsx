@@ -1,31 +1,18 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  TextField,
-} from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React, { useContext, useState } from "react";
 import AddressService from "../services/AddressService";
 import NotificationContext from "./contexts/NotificationContext";
+import BaseAddressModal from "./BaseAddressModal";
+
+const EMPTY_ADDRESS = "";
 
 const NewAddressModal = () => {
-  const EMPTY_ADDRESS = "";
-
   const [showModal, setShowModal] = useState(false);
-  const [address, setAddress] = useState(EMPTY_ADDRESS);
   const setNotification = useContext(NotificationContext);
 
-  const handleClose = () => {
-    setAddress(EMPTY_ADDRESS);
-    setShowModal(false);
-  };
-
-  const handleSave = () => {
+  const handleSave = (address) => {
     AddressService.append(address);
     setNotification("New address added");
-    handleClose();
   };
 
   return (
@@ -33,21 +20,12 @@ const NewAddressModal = () => {
       <Button variant="outlined" onClick={() => setShowModal(true)}>
         New address
       </Button>
-      <Dialog open={showModal} onClose={handleClose}>
-        <DialogContent>
-          <TextField
-            label="Address"
-            value={address}
-            onChange={(event) => {
-              setAddress(event.target.value);
-            }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSave}>Save</Button>
-        </DialogActions>
-      </Dialog>
+      <BaseAddressModal
+        showModal={showModal}
+        initialValue={EMPTY_ADDRESS}
+        onSave={handleSave}
+        onClose={() => setShowModal(false)}
+      />
     </Box>
   );
 };
