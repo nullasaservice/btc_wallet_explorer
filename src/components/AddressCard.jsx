@@ -11,15 +11,18 @@ import React, { useContext, useEffect, useState } from "react";
 import BtcPriceContext from "./contexts/BtcPriceContext";
 import { Warning } from "@mui/icons-material";
 import AddressCardInfo from "./AddressCardInfo";
+import BtcSatsContext from "./contexts/BtcSatsContext";
 
 const AddressCard = ({ index, address }) => {
   const MAX_ADDRESS_CHARACTERS = 25;
+  const BTC_TO_SATS = 100000000;
 
   const [addressData, setAddressData] = useState();
   const [loading, setLoading] = useState(true);
   const [addressNotFound, setAddressNotFound] = useState(false);
   const [showFullAddress, setShowFullAddress] = useState(false);
   const btcPrices = useContext(BtcPriceContext);
+  const { showSats } = useContext(BtcSatsContext);
 
   const addressTooLong = address.length > MAX_ADDRESS_CHARACTERS;
 
@@ -33,9 +36,9 @@ const AddressCard = ({ index, address }) => {
         "https://blockchain.info/balance?active=" + address
       );
 
-      // From satoshis to BTC
-      const addressBalance =
-        addressDataResponse.data[address]["final_balance"] / 100000000;
+      // Balance comes in Satoshis
+      const balance =
+        addressDataResponse.data[address]["final_balance"] / BTC_TO_SATS;
 
       const croppedAddress = !addressTooLong
         ? address
@@ -43,10 +46,10 @@ const AddressCard = ({ index, address }) => {
 
       setAddressData({
         address: croppedAddress,
-        balance: addressBalance,
+        balance: showSats ? balance * BTC_TO_SATS : balance,
         prices: {
-          usd: btcPrices.usd * addressBalance,
-          eur: btcPrices.eur * addressBalance,
+          usd: btcPrices.usd * balance,
+          eur: btcPrices.eur * balance,
         },
       });
     } catch (err) {
@@ -69,8 +72,6 @@ const AddressCard = ({ index, address }) => {
       fetchAddressData();
     }
   }, [index, address, btcPrices]);
-
-  console.log(addressData?.address, address, address.length);
 
   return (
     <Card>
@@ -132,7 +133,7 @@ const AddressCard = ({ index, address }) => {
             ) : (
               <>
                 <AddressCardInfo
-                  label="Balance in BTC"
+                  label={"Balance in " + (showSats ? "sats" : "BTC")}
                   value={addressData.balance}
                 />
                 <AddressCardInfo
