@@ -1,7 +1,8 @@
-import { ArrowBack, Settings } from "@mui/icons-material";
+import { ArrowBack, Refresh, Settings } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import BtcPriceContext from "./contexts/BtcPriceContext";
 
 const SettingsButton = () => {
   const navigate = useNavigate();
@@ -31,6 +32,20 @@ const BackButton = () => {
   );
 };
 
+const RefreshPricesButton = () => {
+  const { refreshPrices } = useContext(BtcPriceContext);
+
+  const handlePriceRefresh = () => {
+    refreshPrices();
+  };
+
+  return (
+    <Button onClick={handlePriceRefresh}>
+      <Refresh />
+    </Button>
+  );
+};
+
 const AppHeader = () => {
   const { pathname } = useLocation();
 
@@ -48,7 +63,15 @@ const AppHeader = () => {
       <Typography variant="h6" marginY={2}>
         BTC Wallet Explorer
       </Typography>
-      <Box flex="1" />
+      <Box
+        flex="1"
+        marginLeft="auto"
+        justifyContent="center"
+        display="flex"
+        alignItems="center"
+      >
+        {pathname === "/" && <RefreshPricesButton />}
+      </Box>
     </Box>
   );
 };

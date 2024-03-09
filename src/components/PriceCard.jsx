@@ -11,7 +11,7 @@ import BtcPriceContext from "./contexts/BtcPriceContext";
 const PriceCard = ({ currency }) => {
   const currencyLowercase = currency.toLowerCase();
 
-  const prices = useContext(BtcPriceContext);
+  const { btcPrices: prices, loadingPrices } = useContext(BtcPriceContext);
 
   const price = prices ? prices[currencyLowercase] : undefined;
 
@@ -21,7 +21,7 @@ const PriceCard = ({ currency }) => {
         <Typography variant="subtitle1" textAlign="center">
           BTC Price ({currency})
         </Typography>
-        {price == null ? (
+        {loadingPrices ? (
           <Box display="flex" justifyContent="center" marginTop={1}>
             <CircularProgress />
           </Box>

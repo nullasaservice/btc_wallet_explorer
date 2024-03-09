@@ -21,7 +21,7 @@ const AddressCard = ({ index, address }) => {
   const [loading, setLoading] = useState(true);
   const [addressNotFound, setAddressNotFound] = useState(false);
   const [showFullAddress, setShowFullAddress] = useState(false);
-  const btcPrices = useContext(BtcPriceContext);
+  const { btcPrices } = useContext(BtcPriceContext);
   const { showSats } = useContext(BtcSatsContext);
 
   const addressTooLong = address.length > MAX_ADDRESS_CHARACTERS;
@@ -62,14 +62,30 @@ const AddressCard = ({ index, address }) => {
     }
   };
 
+  const updateAddressBalanceInFiat = () => {
+    const balance = showSats
+      ? addressData.balance / BTC_TO_SATS
+      : addressData.balance;
+
+    setAddressData({
+      ...addressData,
+      prices: {
+        usd: btcPrices.usd * balance,
+        eur: btcPrices.eur * balance,
+      },
+    });
+  };
+
   useEffect(() => {
     setLoading(true);
     setAddressNotFound(false);
   }, [index, address]);
 
   useEffect(() => {
-    if (btcPrices) {
+    if (btcPrices && !addressData) {
       fetchAddressData();
+    } else if (btcPrices) {
+      updateAddressBalanceInFiat();
     }
   }, [index, address, btcPrices]);
 
