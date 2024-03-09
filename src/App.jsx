@@ -1,6 +1,6 @@
 import { Box, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-import AppContent from "./components/AppContent";
 import ApplicationContexts from "./components/contexts/ApplicationContexts";
+import AppPages from "./AppPages";
 
 const darkTheme = createTheme({
   palette: {
@@ -19,7 +19,7 @@ function App() {
         flexDirection="column"
       >
         <ApplicationContexts>
-          <AppContent />
+          <AppPages />
         </ApplicationContexts>
       </Box>
     </ThemeProvider>
