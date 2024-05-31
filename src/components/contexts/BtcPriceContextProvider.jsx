@@ -11,12 +11,12 @@ const BtcPriceContextProvider = ({ children }) => {
   const fetchPrices = async () => {
     try {
       const currencyValuesResponse = await axios.get(
-        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,eur"
+        "https://mempool.space/api/v1/prices"
       );
 
       setBtcPrices({
-        usd: currencyValuesResponse.data.bitcoin.usd,
-        eur: currencyValuesResponse.data.bitcoin.eur,
+        usd: currencyValuesResponse.data.USD,
+        eur: currencyValuesResponse.data.EUR,
       });
       setLoadingPrices(false);
     } catch (_) {
