@@ -1,17 +1,18 @@
 import { Box, Button } from "@mui/material";
 import React, { useContext, useState } from "react";
-import AddressService from "../services/AddressService";
 import NotificationContext from "./contexts/NotificationContext";
 import BaseAddressModal from "./BaseAddressModal";
+import BtcAddressesContext from "./contexts/BtcAddressesContext";
 
 const EMPTY_ADDRESS = "";
 
 const NewAddressModal = () => {
   const [showModal, setShowModal] = useState(false);
   const setNotification = useContext(NotificationContext);
+  const { addNewAddress } = useContext(BtcAddressesContext);
 
   const handleSave = (address) => {
-    AddressService.append(address);
+    addNewAddress(address);
     setNotification("New address added");
   };
 

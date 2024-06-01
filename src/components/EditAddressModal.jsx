@@ -1,17 +1,19 @@
 import { Edit } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import React, { useContext, useState } from "react";
-import AddressService from "../services/AddressService";
 import NotificationContext from "./contexts/NotificationContext";
 import BaseAddressModal from "./BaseAddressModal";
+import BtcAddressesContext from "./contexts/BtcAddressesContext";
 
 const EditAddressModal = ({ addressIndex }) => {
   const [addressToEdit, setAddressToEdit] = useState();
   const [showModal, setShowModal] = useState(false);
   const setNotification = useContext(NotificationContext);
+  const { getWithIndex, addNewAddressAtIndex } =
+    useContext(BtcAddressesContext);
 
   const handleEdit = () => {
-    const address = AddressService.getWithIndex(addressIndex);
+    const address = getWithIndex(addressIndex);
 
     setAddressToEdit(address);
     setShowModal(true);
@@ -23,7 +25,7 @@ const EditAddressModal = ({ addressIndex }) => {
   };
 
   const handleSave = (address) => {
-    AddressService.addAtIndex(addressIndex, address);
+    addNewAddressAtIndex(addressIndex, address);
     setNotification(`Address #${addressIndex + 1} modified`);
 
     handleClose();
