@@ -82,12 +82,12 @@ const AddressCard = ({ index, address }) => {
   }, [index, address]);
 
   useEffect(() => {
-    if (btcPrices && !addressData) {
+    if (btcPrices && loading) {
       fetchAddressData();
     } else if (btcPrices) {
       updateAddressBalanceInFiat();
     }
-  }, [index, address, btcPrices]);
+  }, [index, address, btcPrices, loading]);
 
   return (
     <Card>
