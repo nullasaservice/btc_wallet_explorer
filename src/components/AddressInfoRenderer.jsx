@@ -1,16 +1,14 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import React, { useContext, useState } from "react";
-import { ArrowLeft, ArrowRight, Delete, Help } from "@mui/icons-material";
+import { ArrowLeft, ArrowRight, Help, OpenInNew } from "@mui/icons-material";
 import AddressCard from "./AddressCard";
-import EditAddressModal from "./EditAddressModal";
-import NotificationContext from "./contexts/NotificationContext";
 import BtcAddressesContext from "./contexts/BtcAddressesContext";
+import { useNavigate } from "react-router-dom";
 
 const AddressInfoRenderer = () => {
   const [addressIndex, setAddressIndex] = useState(0);
-  const setNotification = useContext(NotificationContext);
-  const { getCount, removeAddressAtIndex, isEmpty, getWithIndex } =
-    useContext(BtcAddressesContext);
+  const { getCount, isEmpty, getWithIndex } = useContext(BtcAddressesContext);
+  const navigate = useNavigate();
 
   const isPreviousButtonDisabled = addressIndex === 0;
   const isNextButtonDisabled = addressIndex === getCount() - 1;
@@ -19,14 +17,12 @@ const AddressInfoRenderer = () => {
     setAddressIndex((i) => i - 1);
   };
 
-  const handleNext = () => {
-    setAddressIndex((i) => i + 1);
+  const handleDetails = () => {
+    navigate(`/addresses/${addressIndex}`);
   };
 
-  const handleRemoval = () => {
-    removeAddressAtIndex(addressIndex);
-    setNotification(`Address #${addressIndex + 1} removed`);
-    setAddressIndex(0);
+  const handleNext = () => {
+    setAddressIndex((i) => i + 1);
   };
 
   if (isEmpty()) {
@@ -45,23 +41,22 @@ const AddressInfoRenderer = () => {
   return (
     <Box marginX={2}>
       <AddressCard index={addressIndex} address={getWithIndex(addressIndex)} />
-      <Box width="100%" display="flex" justifyContent="center" marginTop={2}>
+      <Stack
+        justifyContent="space-between"
+        marginTop={2}
+        direction="row"
+        spacing={2}
+      >
         <Button
           variant="contained"
           onClick={handlePrevious}
           disabled={isPreviousButtonDisabled}
-          sx={{ marginRight: 2 }}
         >
           <ArrowLeft />
         </Button>
-        <EditAddressModal addressIndex={addressIndex} />
-        <Button
-          variant="contained"
-          onClick={handleRemoval}
-          sx={{ marginRight: 2 }}
-          color="error"
-        >
-          <Delete />
+        <Button variant="contained" color="success" onClick={handleDetails}>
+          <OpenInNew />
+          <Box marginLeft={1}>Details</Box>
         </Button>
         <Button
           variant="contained"
@@ -70,7 +65,7 @@ const AddressInfoRenderer = () => {
         >
           <ArrowRight />
         </Button>
-      </Box>
+      </Stack>
     </Box>
   );
 };
