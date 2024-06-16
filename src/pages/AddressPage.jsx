@@ -13,6 +13,7 @@ import EditAddressModal from "../components/EditAddressModal";
 import BtcAddressesContext from "../components/contexts/BtcAddressesContext";
 import DeleteAddressModal from "../components/DeleteAddressModal";
 import { OpenInNew } from "@mui/icons-material";
+import AddressSummaryModal from "../components/AddressSummaryModal";
 
 const AddressPage = () => {
   const { addressIndex } = useParams();
@@ -33,6 +34,7 @@ const AddressPage = () => {
         <CardContent>
           <Stack justifyContent="center" spacing={2}>
             <Typography variant="h6">Actions</Typography>
+            <AddressSummaryModal />
             <EditAddressModal />
             <DeleteAddressModal />
             <Typography>

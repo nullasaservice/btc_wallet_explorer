@@ -35,12 +35,7 @@ const EditAddressModal = () => {
 
   return (
     <>
-      <ActionButton
-        icon={<Edit />}
-        onClick={handleEdit}
-        text="Edit address"
-        variant="contained"
-      />
+      <ActionButton icon={<Edit />} onClick={handleEdit} text="Edit address" />
       <BaseAddressModal
         showModal={showModal}
         initialValue={addressToEdit}

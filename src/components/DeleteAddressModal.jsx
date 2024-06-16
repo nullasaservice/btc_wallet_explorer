@@ -25,7 +25,6 @@ const DeleteAddressModal = () => {
       <ActionButton
         icon={<Delete />}
         color="error"
-        variant="contained"
         text="Delete address"
         onClick={handleOpen}
       />
