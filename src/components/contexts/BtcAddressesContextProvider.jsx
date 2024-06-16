@@ -4,10 +4,12 @@ import BtcAddressesContext from "./BtcAddressesContext";
 const LOCAL_STORAGE_KEY = "ADDRESSES";
 
 const BtcAddressesContextProvider = ({ children }) => {
+  const [isReady, setIsReady] = useState(false);
   const [btcAddresses, setBtcAddresses] = useState([]);
 
   useEffect(() => {
     setBtcAddresses(parseAddresses());
+    setIsReady(true);
   }, []);
 
   const parseAddresses = () => {
@@ -59,6 +61,7 @@ const BtcAddressesContextProvider = ({ children }) => {
   return (
     <BtcAddressesContext.Provider
       value={{
+        isReady,
         btcAddresses,
         getCount,
         isEmpty,

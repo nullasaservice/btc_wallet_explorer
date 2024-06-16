@@ -4,10 +4,13 @@ import { ArrowLeft, ArrowRight, Help, OpenInNew } from "@mui/icons-material";
 import AddressCard from "./AddressCard";
 import BtcAddressesContext from "./contexts/BtcAddressesContext";
 import { useNavigate } from "react-router-dom";
+import CurrentBtcAddressContext from "./contexts/CurrentBtcAddressContext";
 
 const AddressInfoRenderer = () => {
-  const [addressIndex, setAddressIndex] = useState(0);
   const { getCount, isEmpty, getWithIndex } = useContext(BtcAddressesContext);
+  const { addressIndex, setAddressIndex } = useContext(
+    CurrentBtcAddressContext
+  );
   const navigate = useNavigate();
 
   const isPreviousButtonDisabled = addressIndex === 0;

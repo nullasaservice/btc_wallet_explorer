@@ -4,21 +4,22 @@ import NotificationContextProvider from "./NotificationContextProvider";
 import PrivacyModeContextProvider from "./PrivacyModeContextProvider";
 import BtcSatsContextProvider from "./BtcSatsContextProvider";
 import BtcAddressesContextProvider from "./BtcAddressesContextProvider";
+import CurrentBtcAddressContextProvider from "./CurrentBtcAddressContextProvider";
 
 const ApplicationContexts = ({ children }) => (
-  <>
-    <NotificationContextProvider>
-      <PrivacyModeContextProvider>
-        <BtcPriceContextProvider>
-          <BtcSatsContextProvider>
-            <BtcAddressesContextProvider>
+  <NotificationContextProvider>
+    <PrivacyModeContextProvider>
+      <BtcPriceContextProvider>
+        <BtcSatsContextProvider>
+          <BtcAddressesContextProvider>
+            <CurrentBtcAddressContextProvider>
               {children}
-            </BtcAddressesContextProvider>
-          </BtcSatsContextProvider>
-        </BtcPriceContextProvider>
-      </PrivacyModeContextProvider>
-    </NotificationContextProvider>
-  </>
+            </CurrentBtcAddressContextProvider>
+          </BtcAddressesContextProvider>
+        </BtcSatsContextProvider>
+      </BtcPriceContextProvider>
+    </PrivacyModeContextProvider>
+  </NotificationContextProvider>
 );
 
 export default ApplicationContexts;
