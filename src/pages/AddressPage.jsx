@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 import AddressCardInfo from "../components/AddressCardInfo";
 import EditAddressModal from "../components/EditAddressModal";
 import BtcAddressesContext from "../components/contexts/BtcAddressesContext";
-import DeleteAddressButton from "../components/DeleteAddressButton";
+import DeleteAddressModal from "../components/DeleteAddressModal";
 import { OpenInNew } from "@mui/icons-material";
 
 const AddressPage = () => {
@@ -34,7 +34,7 @@ const AddressPage = () => {
           <Stack justifyContent="center" spacing={2}>
             <Typography variant="h6">Actions</Typography>
             <EditAddressModal />
-            <DeleteAddressButton />
+            <DeleteAddressModal />
             <Typography>
               Check more about this address on{" "}
               <Link
