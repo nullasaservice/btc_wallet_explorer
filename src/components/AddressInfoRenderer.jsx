@@ -1,5 +1,5 @@
 import { Box, Button, Stack } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { ArrowLeft, ArrowRight, Help, OpenInNew } from "@mui/icons-material";
 import AddressCard from "./AddressCard";
 import BtcAddressesContext from "./contexts/BtcAddressesContext";
@@ -8,7 +8,7 @@ import CurrentBtcAddressContext from "./contexts/CurrentBtcAddressContext";
 
 const AddressInfoRenderer = () => {
   const { getCount, isEmpty, getWithIndex } = useContext(BtcAddressesContext);
-  const { addressIndex, setAddressIndex } = useContext(
+  const { fetchingAddressData, addressIndex, setAddressIndex } = useContext(
     CurrentBtcAddressContext
   );
   const navigate = useNavigate();
@@ -57,7 +57,12 @@ const AddressInfoRenderer = () => {
         >
           <ArrowLeft />
         </Button>
-        <Button variant="contained" color="success" onClick={handleDetails}>
+        <Button
+          variant="contained"
+          color="success"
+          onClick={handleDetails}
+          disabled={fetchingAddressData}
+        >
           <OpenInNew />
           <Box marginLeft={1}>Details</Box>
         </Button>
