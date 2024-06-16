@@ -50,7 +50,7 @@ const AppHeader = () => {
   const { pathname } = useLocation();
 
   return (
-    <Box display="flex" justifyContent="center" width="100%">
+    <Box display="flex" width="100%">
       <Box
         flex="1"
         marginRight="auto"
