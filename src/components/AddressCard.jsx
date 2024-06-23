@@ -6,93 +6,36 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
-import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import BtcPriceContext from "./contexts/BtcPriceContext";
 import { Warning } from "@mui/icons-material";
 import AddressCardInfo from "./AddressCardInfo";
 import BtcSatsContext from "./contexts/BtcSatsContext";
+import CurrentBtcAddressContext from "./contexts/CurrentBtcAddressContext";
+
+const MAX_ADDRESS_CHARACTERS = 25;
 
 const AddressCard = ({ index, address }) => {
-  const MAX_ADDRESS_CHARACTERS = 25;
-  const BTC_TO_SATS = 100000000;
-
-  const [addressData, setAddressData] = useState();
-  const [loading, setLoading] = useState(true);
-  const [addressNotFound, setAddressNotFound] = useState(false);
   const [showFullAddress, setShowFullAddress] = useState(false);
   const { btcPrices } = useContext(BtcPriceContext);
   const { showSats } = useContext(BtcSatsContext);
+  const { fetchingAddressData, addressNotFound, getCurrentBalance } =
+    useContext(CurrentBtcAddressContext);
 
   const addressTooLong = address.length > MAX_ADDRESS_CHARACTERS;
+
+  const croppedAddress = !addressTooLong
+    ? address
+    : address.substring(0, MAX_ADDRESS_CHARACTERS);
 
   const handleFullAddress = () => {
     setShowFullAddress((b) => !b);
   };
 
-  const fetchAddressData = async () => {
-    try {
-      const addressDataResponse = await axios.get(
-        "https://blockchain.info/balance?active=" + address
-      );
-
-      // Balance comes in Satoshis
-      const balance =
-        addressDataResponse.data[address]["final_balance"] / BTC_TO_SATS;
-
-      const croppedAddress = !addressTooLong
-        ? address
-        : address.substring(0, MAX_ADDRESS_CHARACTERS);
-
-      setAddressData({
-        address: croppedAddress,
-        balance: showSats ? balance * BTC_TO_SATS : balance,
-        prices: {
-          usd: btcPrices.usd * balance,
-          eur: btcPrices.eur * balance,
-        },
-      });
-    } catch (err) {
-      if (err?.response?.status === 400) {
-        setAddressData({ address });
-        setAddressNotFound(true);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateAddressBalanceInFiat = () => {
-    const balance = showSats
-      ? addressData.balance / BTC_TO_SATS
-      : addressData.balance;
-
-    setAddressData({
-      ...addressData,
-      prices: {
-        usd: btcPrices.usd * balance,
-        eur: btcPrices.eur * balance,
-      },
-    });
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    setAddressNotFound(false);
-  }, [index, address]);
-
-  useEffect(() => {
-    if (btcPrices && loading) {
-      fetchAddressData();
-    } else if (btcPrices) {
-      updateAddressBalanceInFiat();
-    }
-  }, [index, address, btcPrices, loading]);
-
   return (
     <Card>
       <CardContent>
-        {loading ? (
+        {fetchingAddressData ? (
           <Box display="flex" justifyContent="center" marginTop={1}>
             <CircularProgress />
           </Box>
@@ -105,7 +48,7 @@ const AddressCard = ({ index, address }) => {
                   address
                 ) : (
                   <Box>
-                    {addressData.address}...
+                    {croppedAddress}...
                     <Button
                       variant="contained"
                       onClick={handleFullAddress}
@@ -150,15 +93,15 @@ const AddressCard = ({ index, address }) => {
               <>
                 <AddressCardInfo
                   label={"Balance in " + (showSats ? "sats" : "BTC")}
-                  value={addressData.balance}
+                  value={getCurrentBalance()}
                 />
                 <AddressCardInfo
                   label="Balance in USD"
-                  value={addressData.prices.usd}
+                  value={getCurrentBalance() * btcPrices.usd}
                 />
                 <AddressCardInfo
                   label="Balance in EUR"
-                  value={addressData.prices.eur}
+                  value={getCurrentBalance() * btcPrices.eur}
                 />
               </>
             )}
