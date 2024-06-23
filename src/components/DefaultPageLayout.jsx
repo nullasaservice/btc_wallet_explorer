@@ -2,7 +2,7 @@ import React from "react";
 import AppHeader from "./AppHeader";
 import { Box } from "@mui/material";
 
-const PageLayout = ({ children }) => (
+const DefaultPageLayout = ({ children }) => (
   <Box
     display="flex"
     justifyContent="center"
@@ -15,4 +15,4 @@ const PageLayout = ({ children }) => (
   </Box>
 );
 
-export default PageLayout;
+export default DefaultPageLayout;

@@ -4,12 +4,14 @@ import ActionButton from "./ActionButton";
 import { Delete } from "@mui/icons-material";
 import BtcAddressesContext from "./contexts/BtcAddressesContext";
 import { Box, Button, Dialog, Stack, Typography } from "@mui/material";
+import CurrentBtcAddressContext from "./contexts/CurrentBtcAddressContext";
 
 const DeleteAddressModal = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const { addressIndex } = useParams();
   const { removeAddressAtIndex } = useContext(BtcAddressesContext);
+  const { setAddressIndex } = useContext(CurrentBtcAddressContext);
 
   const handleClose = () => setShowModal(false);
 
@@ -17,7 +19,8 @@ const DeleteAddressModal = () => {
 
   const handleDelete = () => {
     removeAddressAtIndex(addressIndex);
-    navigate(-1);
+    navigate("/");
+    setAddressIndex(0);
   };
 
   return (
